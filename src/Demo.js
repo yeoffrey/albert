@@ -1,16 +1,19 @@
 import React, { Component } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
+import Cytoscape from 'cytoscape';
+import options from './Layout.js';
+import data from './Elements.js';
+import fcose from 'cytoscape-fcose';
+
+Cytoscape.use( fcose );
 
 export default class Demo extends Component {
   
   state = {
     w: 0,
     h: 0,
-    elements: [
-        { data: { id: 'one', label: 'Node 1' }, position: { x: 0, y: 0 } },
-        { data: { id: 'two', label: 'Node 2' }, position: { x: 100, y: 0 }},
-        { data: { source: 'one', target: 'two', label: 'Edge from Node1 to Node2'}}
-    ]
+    elements: data,
+    layout: options
   }
 
   componentDidMount = () => {
@@ -23,12 +26,12 @@ export default class Demo extends Component {
 
   setUpListeners = () => {
     this.cy.on('click', 'edge', (event) => {
-      console.log("edge clicked.");
+    
     })
 
     this.cy.on('click', 'node', (event) => {
-        console.log("node clicked.");
-      })
+        
+    })
   }
   
   render() {
@@ -38,8 +41,10 @@ export default class Demo extends Component {
             elements={this.state.elements}
             style={{ width: this.state.w, height: this.state.h }}
             cy={(cy) => {this.cy = cy}}
+            layout={this.state.layout}
+            pan={ { x: 200, y: 200 } }
         />
       </div>
     )
-    }
+  }
 }
